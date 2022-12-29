@@ -2,7 +2,6 @@ package com.approidtech.ifccalendar;
 
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.ContextMenu;
@@ -16,31 +15,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.approidtech.ifccalendar.API.APIClient;
-import com.approidtech.ifccalendar.API.APIInterface;
-import com.approidtech.ifccalendar.API.Data;
-import com.approidtech.ifccalendar.API.ResponseData;
-import com.google.gson.Gson;
 import com.ozcanalasalvar.library.utils.DateUtils;
 import com.ozcanalasalvar.library.view.datePicker.DatePicker;
 import com.ozcanalasalvar.library.view.popup.DatePickerPopup;
 import com.ozcanalasalvar.library.view.popup.TimePickerPopup;
 import com.ozcanalasalvar.library.view.timePicker.TimePicker;
 
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
 
 public class HomeActivity extends AppCompatActivity {
 
     private ImageView imgHourHand,imgDayHand,imgMonthHand,ivMenu;
     private Button btConvert,btReminder;
-    private APIInterface apiInterface;
     private TextView tVResult, tVSetDate,tvSetTime;
     private DatePickerPopup datePickerPopup;
     private TimePickerPopup timePickerPopup;
@@ -70,21 +58,10 @@ public class HomeActivity extends AppCompatActivity {
         btConvert.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (userDate != null && userTime != null) {
-                    getData();
-                }else {
-                    Toast.makeText(getApplicationContext(),"Please select Date/Time.",Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-        btReminder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(HomeActivity.this, CalendarTabActivity.class));
-            }
-        });
+                Toast.makeText(getApplicationContext(),"Please select Date/Time.",Toast.LENGTH_SHORT).show();
 
-        apiInterface = APIClient.getClient().create(APIInterface.class);
+            }
+        });
 
         datePickerPopup = new DatePickerPopup.Builder()
                 .from(HomeActivity.this)
@@ -189,35 +166,7 @@ public class HomeActivity extends AppCompatActivity {
         imgMonthHand.startAnimation(month);
 
     }
-    private void getData(){
-        apiInterface.fetchDate(APIClient.API_KEY,userDate,myID).enqueue(new Callback<ResponseData>() {
-            @Override
-            public void onResponse(@NonNull Call<ResponseData> call, @NonNull Response<ResponseData> response) {
-                if (response.code()==200){
-                    if(response.body().getSuccess()==1){
-                        Data data = new Gson().fromJson(new Gson().toJson(response.body().getData()), Data.class);
-                        double day, month;
-                        if (data.getExtraDay() == 0) {
-                            day = data.getCurrDay();
-                            month = data.getTotalDays();
-                            tVResult.setText(data.getResultDate());
-                            rotateDialer(day, month);
-                        }else{
-                            day = 28;
-                            month = 360;
-                            rotateDialer(day, month);
-                            tVResult.setText("Rest Day");
-                        }
-                    }
-                }
-            }
 
-            @Override
-            public void onFailure(Call<ResponseData> call, @NonNull Throwable t) {
-                t.printStackTrace();
-            }
-        });
-    }
     public void restDayPopup(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Entered date is rest day of the year.")
