@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="30dp">
+    <TextView
+        android:id="@+id/eventcellDate"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:layout_marginStart="20dp"
+        android:textSize="16sp"
+        android:fontFamily="@font/inter_regular"
+        android:textColor="@color/white"
+        android:text="12/12/2022"/>
+    <TextView
+        android:id="@+id/eventcellTime"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:layout_marginStart="20dp"
+        android:textSize="16sp"
+        android:fontFamily="@font/inter_regular"
+        android:textColor="@color/white"
+        android:text="10:00"/>
+
+    <TextView
+        android:id="@+id/eventcellMessege"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:layout_marginStart="15dp"
+        android:textSize="16sp"
+        android:fontFamily="@font/inter_regular"
+        android:textColor="@color/white"
+        android:text="Event"/>
+
+</LinearLayout>
